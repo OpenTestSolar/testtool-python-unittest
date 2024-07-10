@@ -34,6 +34,8 @@ def run_tests(test_cases: List[str]) -> str:
         return report_file_name
     
 def parse_test_report(xml_file: str) -> list[TestResult]:
+    with open(xml_file, 'r') as f:
+        logger.info(f"xml file:\n{f.read()}")
     tree = ET.parse(xml_file)
     root = tree.getroot()
     test_results: list[TestResult] = []
@@ -138,11 +140,11 @@ def format_selector_to_unittest(selectors: list[str]) -> list[str]:
     return testcases
 
 def run_testcases(entry: EntryParam, pipe_io: Optional[BinaryIO] = None) -> None:
-    logger.info(f"running testcase in workdir [{entry.ProjectPath}]")
-    reporter = Reporter(pipe_io)
-    
+    logger.info(f"running testcase {entry.TestSelectors} in workdir [{entry.ProjectPath}]")
     executable_selectors = get_executable_selectors(proj_path=entry.ProjectPath, test_selectors=entry.TestSelectors)
+    logger.info(f"get excutalbe selectors: {executable_selectors}")
     testcases = format_selector_to_unittest(executable_selectors)
+    logger.info(f"format testcases: {testcases}")
     sys.path.insert(0, entry.ProjectPath)
     # cov = coverage.Coverage(source=[entry.ProjectPath]) 
     # with cov.collect():
@@ -150,5 +152,6 @@ def run_testcases(entry: EntryParam, pipe_io: Optional[BinaryIO] = None) -> None
     # cov.save()
     # cov.json_report()
     test_results = parse_test_report(report_file_name)
+    reporter = Reporter(pipe_io)
     for result in test_results:
         reporter.report_case_result(result)

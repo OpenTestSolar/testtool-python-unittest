@@ -24,25 +24,30 @@ def get_load_results_from_test_suite(proj_root: str, test_suite: unittest.TestSu
     testcase_list: list[TestCase] = []
     load_error_list: list[LoadError] = []
     for it in list_testsuite(test_suite):
-        logger.info(f"loaded testcase: {it}")
         if it.__class__.__name__ == 'ModuleImportFailure':
             try:
                 it.debug()
             except Exception as e:
+                err_msg = e.message.strip() # type: ignore
+                logger.error(f"load testcase {it._testMethodName} failed, err: {err_msg}")
                 load_error_list.append(LoadError(
                     name=it._testMethodName,
-                    message=e.message.strip() # type: ignore
+                    message=err_msg
                 ))
         elif it.__class__.__name__ == '_FailedTest':
+            err_msg = it._exception.msg # type: ignore
+            logger.error(f"load testcase {it._testMethodName} failed, err: {err_msg}")
             load_error_list.append(LoadError(
                 name=it._testMethodName,
-                message=it._exception.msg # type: ignore
+                message=err_msg
             ))
         else:
             class_file_path = inspect.getfile(it.__class__)
             rel_path = os.path.relpath(class_file_path, proj_root)
+            name = f"{rel_path}?{it.__class__.__name__}/{it._testMethodName}"
+            logger.error(f"load testcase: {name}")
             testcase_list.append(TestCase(
-                Name=f"{rel_path}?{it.__class__.__name__}/{it._testMethodName}",
+                Name=name,
                 Attributes={
                     "description": (getattr(it, it._testMethodName).__doc__ or '').strip(),
                 }
@@ -69,6 +74,7 @@ def parse_testcases(proj_root: str, test_selectors: list[str]) -> Tuple[list[Tes
         testcases, load_errors = get_load_results_from_test_suite(proj_root, test_suite)
         testcase_list.extend(testcases)
         load_error_list.extend(load_errors)
+    logger.info(f"get {len(testcase_list)} testcases and {len(load_error_list)} load errors")
     return testcase_list, load_error_list
         
 def collect_testcases(
@@ -76,6 +82,9 @@ def collect_testcases(
 ) -> None:
     logger.info(f"loading testcase from workdir [{entry_param.ProjectPath}], selectors: {entry_param.TestSelectors}, task id: {entry_param.TaskId}")
     deduplicated_selectors: Set[str] = set()
+    if not entry_param.TestSelectors:
+        logger.info("lack of test selectors, use default value: .")
+        entry_param.TestSelectors = ["."]
     if len(entry_param.TestSelectors) == 1 and (entry_param.TestSelectors[0] == "." or entry_param.TestSelectors[0] == "/"):
         for item in os.listdir(entry_param.ProjectPath):
             if item.startswith(".") or item.startswith("_"):
@@ -89,6 +98,7 @@ def collect_testcases(
         for selector in entry_param.TestSelectors:
             url = urllib.parse.urlparse(selector)
             deduplicated_selectors.add(url.path)
+    logger.info(f"try to load testcases from {deduplicated_selectors}")
     tests, load_errors = parse_testcases(proj_root=entry_param.ProjectPath, test_selectors=list(deduplicated_selectors))
     load_result: LoadResult = LoadResult(
         Tests=tests,
