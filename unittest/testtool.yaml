@@ -28,3 +28,4 @@ supportArch:
 gitPkgUrl: https://github.com/OpenTestSolar/testtool-python-unittest.git
 httpPkgUrl: https://testsolar-1321258242.cos.ap-guangzhou.myqcloud.com/testtools/python/unittest/metadata.json@stable
 certified: false
+repository: https://github.com/OpenTestSolar/testtool-python-unittest

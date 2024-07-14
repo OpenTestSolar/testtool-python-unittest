@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Unittest Tool Build And Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  unittest-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12" ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          cd unittest
+          pdm sync -d -G dev
+      - name: Lint with ruff
+        run: |
+          cd unittest
+          pdm run ruff check src
+      - name: Check with mypy
+        run: |
+          cd unittest
+          pdm run mypy src --strict
+      - name: Test with pytest
+        run: |
+          cd unittest
+          pdm run pytest tests --durations=5 --cov=. --cov-fail-under=90 --cov-report term -vv --ignore=tests/testdata
