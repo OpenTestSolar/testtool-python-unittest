@@ -2,7 +2,7 @@ schemaVersion: 1.0
 name: unittest
 nameZh: unittest测试工具
 description: unittest自动化测试工具
-version: 0.1.0
+version: 0.1.2
 lang: python
 defaultBaseImage: mirrors.tencent.com/testsolar-base/python:3.9
 langType: INTERPRETED
