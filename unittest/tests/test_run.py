@@ -108,7 +108,7 @@ def test_run_class():
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
-                "test_demo01/test_demo01.py?MyTest01"
+                "test_demo01/test_demo04.py?MyTest01"
             ]
         }
         json.dump(content, f)
@@ -138,7 +138,7 @@ def test_run_case():
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
-                "test_demo01/test_demo01.py?name=MyTest01/test_01"
+                "test_demo01/test_demo04.py?name=MyTest01/test_01"
             ]
         }
         json.dump(content, f)
