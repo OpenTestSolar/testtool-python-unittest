@@ -25,17 +25,17 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          cd unittest
+          cd python_unittest
           pdm sync -d -G dev
       - name: Lint with ruff
         run: |
-          cd unittest
+          cd python_unittest
           pdm run ruff check src
       - name: Check with mypy
         run: |
-          cd unittest
+          cd python_unittest
           pdm run mypy src --strict
       - name: Test with pytest
         run: |
-          cd unittest
+          cd python_unittest
           pdm run pytest tests --durations=5 --cov=. --cov-fail-under=90 --cov-report term -vv --ignore=tests/testdata

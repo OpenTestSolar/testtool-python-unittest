@@ -1,8 +1,8 @@
 schemaVersion: 1.0
-name: unittest
-nameZh: unittest测试工具
-description: unittest自动化测试工具
-version: 0.1.2
+name: python_unittest
+nameZh: python_unittest测试工具
+description: python_unittest自动化测试工具
+version: 0.1.0
 lang: python
 defaultBaseImage: mirrors.tencent.com/testsolar-base/python:3.9
 langType: INTERPRETED
@@ -14,10 +14,10 @@ parameterDefs:
     lang: bash
     inputWidget: code
 entry:
-  load: "python3 /testtools/unittest/src/load.py $1"
-  run: "python3 /testtools/unittest/src/run.py $1"
+  load: "python3 /testtools/python_unittest/src/load.py $1"
+  run: "python3 /testtools/python_unittest/src/run.py $1"
 homePage: https://github.com/OpenTestSolar/testtool-python-unittest
-versionFile: https://testsolar-1321258242.cos.ap-guangzhou.myqcloud.com/testtools/python/unittest/metadata.json
+versionFile: https://testsolar-1321258242.cos.ap-guangzhou.myqcloud.com/testtools/python/python_unittest/metadata.json
 indexFile: https://testsolar-1321258242.cos.ap-guangzhou.myqcloud.com/testtools/stable.index.json
 scaffoldRepo: https://github.com/OpenTestSolar/testtool-python-unittest
 supportOS:

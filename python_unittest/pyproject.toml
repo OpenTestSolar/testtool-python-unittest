@@ -1,6 +1,6 @@
 [project]
-name = "testsolar-unittest"
-version = "0.1.2"
+name = "python_unittest"
+version = "0.1.0"
 description = "Python unittest test tool for TestSolar"
 authors = [
     {name = "dzx-cptbtptp", email = "371140679@qq.com"},
@@ -17,7 +17,7 @@ license = {text = "MIT"}
 
 
 [tool.pdm]
-distribution = true
+distribution = false
 
 [tool.pdm.dev-dependencies]
 dev = [
