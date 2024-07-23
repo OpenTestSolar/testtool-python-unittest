@@ -1,14 +1,15 @@
 import os
-from typing import Iterator, Optional, BinaryIO, Set, Tuple
+from typing import Iterator, Set, Tuple
 
 from loguru import logger
 from testsolar_testtool_sdk.model.load import LoadResult, LoadError
 from testsolar_testtool_sdk.model.param import EntryParam
 from testsolar_testtool_sdk.model.test import TestCase
-from testsolar_testtool_sdk.reporter import Reporter
+from testsolar_testtool_sdk.reporter import FileReporter
 import unittest
 import urllib.parse
 import inspect
+from pathlib import Path
 
 def list_testsuite(test_suite: unittest.TestSuite) -> Iterator[unittest.TestCase]:
     '''获取testsuite中的TestCase实例列表
@@ -77,9 +78,7 @@ def parse_testcases(proj_root: str, test_selectors: list[str]) -> Tuple[list[Tes
     logger.info(f"get {len(testcase_list)} testcases and {len(load_error_list)} load errors")
     return testcase_list, load_error_list
         
-def collect_testcases(
-    entry_param: EntryParam, pipe_io: Optional[BinaryIO] = None
-) -> None:
+def collect_testcases(entry_param: EntryParam) -> None:
     logger.info(f"loading testcase from workdir [{entry_param.ProjectPath}], selectors: {entry_param.TestSelectors}, task id: {entry_param.TaskId}")
     deduplicated_selectors: Set[str] = set()
     if not entry_param.TestSelectors:
@@ -104,5 +103,5 @@ def collect_testcases(
         Tests=tests,
         LoadErrors=load_errors,
     )
-    reporter = Reporter(pipe_io=pipe_io)
+    reporter = FileReporter(report_path=Path(entry_param.FileReportPath))
     reporter.report_load_result(load_result)

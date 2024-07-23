@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:8bb269d4131efac22341a204be0a6c6f5cc94c15543387abafc22f37f1627051"
+content_hash = "sha256:0b2c662cc5aebda5ee6a63b45ede942045f3c7e718ae621b29043602f7a3fb0d"
 
 [[package]]
 name = "annotated-types"
@@ -585,7 +585,7 @@ files = [
 
 [[package]]
 name = "testsolar-testtool-sdk"
-version = "0.4.0"
+version = "0.4.1"
 requires_python = ">=3.7"
 summary = "Python3 SDK for TestSolar testtool"
 groups = ["default"]
@@ -594,8 +594,8 @@ dependencies = [
     "portalocker>=2.7",
 ]
 files = [
-    {file = "testsolar-testtool-sdk-0.4.0.tar.gz", hash = "sha256:96109f9e801f862c55245b793c8c3cc16f417aafe86ea059567abb4eea27b98f"},
-    {file = "testsolar_testtool_sdk-0.4.0-py3-none-any.whl", hash = "sha256:b78131d608107050e5a2576d0f5e74eb56179c09ddb5cc30ded196f6a03cdbcd"},
+    {file = "testsolar_testtool_sdk-0.4.1-py3-none-any.whl", hash = "sha256:d112adb44a5d6241fcfe4ba3e60f0b34278571d9698f49ddc592b2073083325f"},
+    {file = "testsolar_testtool_sdk-0.4.1.tar.gz", hash = "sha256:85674f6776dcaa7c8a28012bc03a12c585b81601ba2361c7e1c9ccbff4adeb92"},
 ]
 
 [[package]]

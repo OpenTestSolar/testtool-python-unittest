@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 from src.load import collect_testcases_from_args
-from testsolar_testtool_sdk.pipe_reader import read_load_result
+from testsolar_testtool_sdk.file_reader import read_file_load_result
 
 testdata_dir: str = str(Path(__file__).parent.absolute().joinpath("testdata"))
 
@@ -14,7 +14,7 @@ def test_collect_all_testcases():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": "",
+            "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -22,14 +22,11 @@ def test_collect_all_testcases():
             ]
         }
         json.dump(content, f)
-    pipe_io = io.BytesIO()
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
-        pipe_io=pipe_io,
     )
-    pipe_io.seek(0)
-    re = read_load_result(pipe_io)
+    re = read_file_load_result(file_report_path=Path(testdata_dir))
     assert len(re.Tests) == 6
     assert len(re.LoadErrors) == 1
         
@@ -39,7 +36,7 @@ def test_collect_file():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": "",
+            "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -47,14 +44,11 @@ def test_collect_file():
             ]
         }
         json.dump(content, f)
-    pipe_io = io.BytesIO()
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
-        pipe_io=pipe_io,
     )
-    pipe_io.seek(0)
-    re = read_load_result(pipe_io)
+    re = read_file_load_result(file_report_path=Path(testdata_dir))
     assert len(re.Tests) == 2
     assert not re.LoadErrors 
 
@@ -63,7 +57,7 @@ def test_collect_dir():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": "",
+            "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -71,13 +65,10 @@ def test_collect_dir():
             ]
         }
         json.dump(content, f)
-    pipe_io = io.BytesIO()
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
-        pipe_io=pipe_io,
     )
-    pipe_io.seek(0)
-    re = read_load_result(pipe_io)
+    re = read_file_load_result(file_report_path=Path(testdata_dir))
     assert len(re.Tests) == 4
     assert len(re.LoadErrors) == 1

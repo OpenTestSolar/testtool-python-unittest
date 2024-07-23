@@ -1,7 +1,7 @@
 import json
 import sys
 from pathlib import Path
-from typing import Optional, List, BinaryIO
+from typing import Optional, List
 
 from dacite import from_dict
 from testsolar_testtool_sdk.model.param import EntryParam
@@ -14,7 +14,7 @@ from testsolar_python_unittest.collector import collect_testcases  # type: ignor
 
 
 def collect_testcases_from_args(
-    args: List[str], workspace: Optional[str] = None, pipe_io: Optional[BinaryIO] = None
+    args: List[str], workspace: Optional[str] = None
 ) -> None:
     if len(args) != 2:
         raise SystemExit("Usage: python load.py <entry_file>")
@@ -25,7 +25,7 @@ def collect_testcases_from_args(
         entry = from_dict(data_class=EntryParam, data=json.loads(f.read()))
         if workspace:
             entry.ProjectPath = workspace
-        collect_testcases(entry_param=entry, pipe_io=pipe_io)
+        collect_testcases(entry_param=entry)
 
 
 if __name__ == "__main__":

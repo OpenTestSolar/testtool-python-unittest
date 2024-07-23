@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Optional, BinaryIO, List
+from typing import List
 import os
 from loguru import logger
 from testsolar_testtool_sdk.model.param import EntryParam
@@ -11,13 +11,14 @@ from testsolar_testtool_sdk.model.testresult import (
     TestCaseLog,
     LogLevel,
 )
-from testsolar_testtool_sdk.reporter import Reporter
+from testsolar_testtool_sdk.reporter import FileReporter
 import xml.etree.ElementTree as ET
 import unittest
 import xmlrunner # type: ignore
 # import coverage
 from urllib.parse import urlparse, parse_qs
 import sys
+from pathlib import Path
 
 def run_tests(test_cases: List[str]) -> str:
     report_file_name = 'test_results.xml'
@@ -139,7 +140,7 @@ def format_selector_to_unittest(selectors: list[str]) -> list[str]:
         testcases.append(unittest_path)  
     return testcases
 
-def run_testcases(entry: EntryParam, pipe_io: Optional[BinaryIO] = None) -> None:
+def run_testcases(entry: EntryParam) -> None:
     logger.info(f"running testcase {entry.TestSelectors} in workdir [{entry.ProjectPath}]")
     executable_selectors = get_executable_selectors(proj_path=entry.ProjectPath, test_selectors=entry.TestSelectors)
     logger.info(f"get excutalbe selectors: {executable_selectors}")
@@ -152,6 +153,6 @@ def run_testcases(entry: EntryParam, pipe_io: Optional[BinaryIO] = None) -> None
     # cov.save()
     # cov.json_report()
     test_results = parse_test_report(report_file_name)
-    reporter = Reporter(pipe_io)
+    reporter = FileReporter(report_path=Path(entry.FileReportPath))
     for result in test_results:
         reporter.report_case_result(result)
