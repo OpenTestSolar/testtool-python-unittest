@@ -28,24 +28,24 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: |
-          cd unittest
+          cd python_unittest
           pdm install -d
       - name: Build package
         run: |
-          cd unittest
+          cd python_unittest
           pdm build
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          packages-dir: unittest/dist/
+          packages-dir: python_unittest/dist/
           skip-existing: true
       - name: Release metadata
         run: |
           git config --global user.name 'asiazhang'
           git config --global user.email 'asiazhang2002@gmail.com'
           pip install -U solar-registry
-          solar-registry pull-request unittest
+          solar-registry pull-request python_unittest
         env:
           GH_TOKEN: ${{ secrets.TESTSOLAR_TOKEN }}

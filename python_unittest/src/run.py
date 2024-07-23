@@ -10,14 +10,14 @@ parent = str(Path(__file__).parent.resolve())
 if parent not in sys.path:
     sys.path.append(parent)
 
-from testsolar_unittest.collector import collect_testcases  # type: ignore  # noqa: E402
+from testsolar_python_unittest.executor import run_testcases  # type: ignore  # noqa: E402
 
 
-def collect_testcases_from_args(
+def run_testcases_from_args(
     args: List[str], workspace: Optional[str] = None, pipe_io: Optional[BinaryIO] = None
 ) -> None:
     if len(args) != 2:
-        raise SystemExit("Usage: python load.py <entry_file>")
+        raise SystemExit("Usage: python run.py <entry_file>")
 
     filename = args[1]
 
@@ -25,8 +25,8 @@ def collect_testcases_from_args(
         entry = from_dict(data_class=EntryParam, data=json.loads(f.read()))
         if workspace:
             entry.ProjectPath = workspace
-        collect_testcases(entry_param=entry, pipe_io=pipe_io)
+        run_testcases(entry=entry, pipe_io=pipe_io)
 
 
 if __name__ == "__main__":
-    collect_testcases_from_args(sys.argv)
+    run_testcases_from_args(sys.argv)
