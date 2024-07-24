@@ -14,7 +14,7 @@ def test_collect_all_testcases():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": testdata_dir,
+            "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -26,7 +26,7 @@ def test_collect_all_testcases():
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(testdata_dir))
+    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
     assert len(re.Tests) == 6
     assert len(re.LoadErrors) == 1
         
@@ -36,7 +36,7 @@ def test_collect_file():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": testdata_dir,
+            "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -48,7 +48,7 @@ def test_collect_file():
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(testdata_dir))
+    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
     assert len(re.Tests) == 2
     assert not re.LoadErrors 
 
@@ -57,7 +57,7 @@ def test_collect_dir():
         content = {
             "TaskId": "aa",
             "ProjectPath": testdata_dir,
-            "FileReportPath": testdata_dir,
+            "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
             "TestSelectors": [
@@ -69,6 +69,6 @@ def test_collect_dir():
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(testdata_dir))
+    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
     assert len(re.Tests) == 4
     assert len(re.LoadErrors) == 1
