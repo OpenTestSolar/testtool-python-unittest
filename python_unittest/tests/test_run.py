@@ -209,3 +209,30 @@ def test_run_case():
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
+    
+def test_run_case_with_coverage():
+    with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
+        content = {
+            "TaskId": "aa",
+            "ProjectPath": testdata_dir,
+            "FileReportPath": testdata_dir,
+            "Collectors": [],
+            "Context": {},
+            "TestSelectors": [
+                "test_demo01/test_demo04.py?name=MyTest01/test_01"
+            ]
+        }
+        json.dump(content, f)
+    os.environ["TESTSOLAR_TTP_ENABLECOVERAGE"] = "1"
+    run_testcases_from_args(
+        args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
+        workspace=testdata_dir,
+    )
+
+    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+    assert re.Test.Name
+    assert re.ResultType
+    assert re.Steps
+    assert re.StartTime
+    assert re.EndTime
+    assert os.path.exists("coverage.xml") == True

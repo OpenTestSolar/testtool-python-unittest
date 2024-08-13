@@ -2,17 +2,24 @@ schemaVersion: 1.0
 name: python_unittest
 nameZh: python_unittest测试工具
 description: python_unittest自动化测试工具
-version: 0.2.7
+version: 0.2.8
 lang: python
 defaultBaseImage: mirrors.tencent.com/testsolar-base/python:3.9
 langType: INTERPRETED
 parameterDefs:
-  - name: sample_param
-    value: 参数例子
-    desc: 代码类型参数例子
-    default: '# place your extra bash command here'
-    lang: bash
-    inputWidget: code
+  - name: enableCoverage
+    value: 是否开启覆盖率统计
+    desc: |-
+      采集代码覆盖率信息并上报。
+    default: 'true'
+    choices:
+      - desc: "开启代码覆盖率采集"
+        displayName: "是"
+        value: 'true'
+      - desc: "不开启代码覆盖率采集"
+        displayName: "否"
+        value: 'false'
+    inputWidget: choices
 entry:
   load: "python3 /testtools/python_unittest/src/load.py $1"
   run: "python3 /testtools/python_unittest/src/run.py $1"

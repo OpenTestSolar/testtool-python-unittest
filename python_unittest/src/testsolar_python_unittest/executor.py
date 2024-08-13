@@ -15,7 +15,7 @@ from testsolar_testtool_sdk.reporter import FileReporter
 import xml.etree.ElementTree as ET
 import unittest
 import xmlrunner # type: ignore
-# import coverage
+import coverage
 from urllib.parse import urlparse, parse_qs
 import sys
 from pathlib import Path
@@ -147,11 +147,16 @@ def run_testcases(entry: EntryParam) -> None:
     testcases = format_selector_to_unittest(executable_selectors)
     logger.info(f"format testcases: {testcases}")
     sys.path.insert(0, entry.ProjectPath)
-    # cov = coverage.Coverage(source=[entry.ProjectPath]) 
-    # with cov.collect():
-    report_file_name = run_tests(testcases)
-    # cov.save()
-    # cov.json_report()
+    enable = os.environ.get("TESTSOLAR_TTP_ENABLECOVERAGE", "")
+    if enable and enable in ["1", "true", "True"]:
+        cov = coverage.Coverage(source=[entry.ProjectPath]) 
+        cov.start()
+        report_file_name = run_tests(testcases)
+        cov.stop()
+        cov.save()
+        cov.xml_report()
+    else:
+        report_file_name = run_tests(testcases)
     test_results = parse_test_report(report_file_name)
     reporter = FileReporter(report_path=Path(entry.FileReportPath))
     for result in test_results:
