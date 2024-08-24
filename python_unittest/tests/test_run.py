@@ -5,6 +5,7 @@ from pathlib import Path
 from testsolar_testtool_sdk.file_reader import read_file_test_result
 from testsolar_testtool_sdk.model.test import TestCase
 from src.run import run_testcases_from_args
+from src.testsolar_python_unittest.executor import calculate_md5_hash
 
 testdata_dir: str = str(Path(__file__).parent.absolute().joinpath("testdata"))
 
@@ -235,4 +236,5 @@ def test_run_case_with_coverage():
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    assert os.path.exists("coverage.xml") == True
+    file_name = calculate_md5_hash(" ".join(content["TestSelectors"]))[:10]
+    assert os.path.exists(f"./testsolar_coverage/{file_name}.xml") == True

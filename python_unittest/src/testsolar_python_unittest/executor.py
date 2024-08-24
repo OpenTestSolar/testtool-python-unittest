@@ -19,6 +19,7 @@ import coverage
 from urllib.parse import urlparse, parse_qs
 import sys
 from pathlib import Path
+import hashlib
 
 def run_tests(test_cases: List[str]) -> str:
     report_file_name = 'test_results.xml'
@@ -140,6 +141,11 @@ def format_selector_to_unittest(selectors: list[str]) -> list[str]:
         testcases.append(unittest_path)  
     return testcases
 
+def calculate_md5_hash(input_string: str) -> str:
+    md5_hash = hashlib.md5()
+    md5_hash.update(input_string.encode('utf-8'))
+    return md5_hash.hexdigest()
+
 def run_testcases(entry: EntryParam) -> None:
     logger.info(f"running testcase {entry.TestSelectors} in workdir [{entry.ProjectPath}]")
     executable_selectors = get_executable_selectors(proj_path=entry.ProjectPath, test_selectors=entry.TestSelectors)
@@ -154,7 +160,8 @@ def run_testcases(entry: EntryParam) -> None:
         report_file_name = run_tests(testcases)
         cov.stop()
         cov.save()
-        cov.xml_report()
+        md5_str = calculate_md5_hash(input_string=" ".join(entry.TestSelectors))[:10]
+        cov.xml_report(outfile=os.path.join("testsolar_coverage", f"{md5_str}.xml"))
     else:
         report_file_name = run_tests(testcases)
     test_results = parse_test_report(report_file_name)
