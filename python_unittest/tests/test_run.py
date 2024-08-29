@@ -237,4 +237,4 @@ def test_run_case_with_coverage():
     assert re.StartTime
     assert re.EndTime
     file_name = calculate_md5_hash(" ".join(content["TestSelectors"]))[:10]
-    assert os.path.exists(f"./testsolar_coverage/{file_name}.xml") == True
+    assert os.path.exists(os.path.join(testdata_dir, "testsolar_coverage", f"{file_name}.xml")) == True

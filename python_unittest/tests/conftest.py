@@ -16,5 +16,5 @@ def pytest_sessionfinish(session, exitstatus):
     # 删除结果文件
     os.remove("test_results.xml")
     # 删除coverage文件
-    shutil.rmtree(f"./testsolar_coverage")
+    shutil.rmtree(os.path.join(testdata_dir, "testsolar_coverage"))
     yield

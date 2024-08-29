@@ -161,7 +161,7 @@ def run_testcases(entry: EntryParam) -> None:
         cov.stop()
         cov.save()
         md5_str = calculate_md5_hash(input_string=" ".join(entry.TestSelectors))[:10]
-        cov.xml_report(outfile=os.path.join("testsolar_coverage", f"{md5_str}.xml"))
+        cov.xml_report(outfile=os.path.join(entry.ProjectPath, "testsolar_coverage", f"{md5_str}.xml"))
     else:
         report_file_name = run_tests(testcases)
     test_results = parse_test_report(report_file_name)
