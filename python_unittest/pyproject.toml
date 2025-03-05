@@ -1,6 +1,6 @@
 [project]
 name = "python_unittest"
-version = "0.2.12"
+version = "0.2.13"
 description = "Python unittest test tool for TestSolar"
 authors = [
     {name = "dzx-cptbtptp", email = "371140679@qq.com"},
@@ -27,4 +27,12 @@ dev = [
     "ruff>=0.4.10",
     "mypy>=1.10.0",
     "setuptools>=70.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.5",
+    "ruff>=0.9.9",
 ]

@@ -18,59 +18,83 @@ def test_run_all_testcases():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "."
-            ]
+            "TestSelectors": ["."],
         }
         json.dump(content, f)
-        
+
     run_testcases_from_args(
         args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_05"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_05"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_06"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_06"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_03"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_03"),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_04"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_04"),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-        
+
 
 def test_run_file():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
@@ -80,31 +104,36 @@ def test_run_file():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo02.py"
-            ]
+            "TestSelectors": ["test_demo02.py"],
         }
         json.dump(content, f)
-        
+
     run_testcases_from_args(
         args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_03"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_03"),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_04"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(Name="tests/testdata/test_demo02.py?MyTest02/test_04"),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-        
+
+
 def test_run_dir():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
         content = {
@@ -113,45 +142,64 @@ def test_run_dir():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo01"
-            ]
+            "TestSelectors": ["test_demo01"],
         }
         json.dump(content, f)
-        
+
     run_testcases_from_args(
         args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_05"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_05"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_06"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo03.py?MyTest03/test_06"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-        
+
+
 def test_run_class():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
         content = {
@@ -160,31 +208,40 @@ def test_run_class():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo01/test_demo04.py?MyTest01"
-            ]
+            "TestSelectors": ["test_demo01/test_demo04.py?MyTest01"],
         }
         json.dump(content, f)
-        
+
     run_testcases_from_args(
         args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"))
+
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_02"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-        
+
+
 def test_run_case():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
         content = {
@@ -193,24 +250,28 @@ def test_run_case():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo01/test_demo04.py?name=MyTest01/test_01"
-            ]
+            "TestSelectors": ["test_demo01/test_demo04.py?name=MyTest01/test_01"],
         }
         json.dump(content, f)
-        
+
     run_testcases_from_args(
         args=["run.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
-    
+
+
 def test_run_case_with_coverage():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
         content = {
@@ -219,9 +280,7 @@ def test_run_case_with_coverage():
             "FileReportPath": testdata_dir,
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo01/test_demo04.py?name=MyTest01/test_01"
-            ]
+            "TestSelectors": ["test_demo01/test_demo04.py?name=MyTest01/test_01"],
         }
         json.dump(content, f)
     os.environ["TESTSOLAR_TTP_ENABLECOVERAGE"] = "1"
@@ -230,11 +289,18 @@ def test_run_case_with_coverage():
         workspace=testdata_dir,
     )
 
-    re = read_file_test_result(Path(testdata_dir), case=TestCase(Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"))
+    re = read_file_test_result(
+        Path(testdata_dir),
+        case=TestCase(
+            Name="tests/testdata/test_demo01/test_demo04.py?MyTest01/test_01"
+        ),
+    )
     assert re.Test.Name
     assert re.ResultType
     assert re.Steps
     assert re.StartTime
     assert re.EndTime
     file_name = calculate_md5_hash(" ".join(content["TestSelectors"]))[:10]
-    assert os.path.exists(os.path.join(testdata_dir, "testsolar_coverage", f"{file_name}.xml")) == True
+    assert os.path.exists(
+        os.path.join(testdata_dir, "testsolar_coverage", f"{file_name}.xml")
+    )

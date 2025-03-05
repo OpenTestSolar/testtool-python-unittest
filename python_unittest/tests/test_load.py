@@ -1,4 +1,3 @@
-import io
 import json
 import os
 from pathlib import Path
@@ -17,20 +16,20 @@ def test_collect_all_testcases():
             "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "."
-            ]
+            "TestSelectors": ["."],
         }
         json.dump(content, f)
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
+    re = read_file_load_result(
+        file_report_path=Path(os.path.join(testdata_dir, "results.json"))
+    )
     assert len(re.Tests) == 6
     assert len(re.LoadErrors) == 1
-        
-        
+
+
 def test_collect_file():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
         content = {
@@ -39,18 +38,19 @@ def test_collect_file():
             "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo02.py"
-            ]
+            "TestSelectors": ["test_demo02.py"],
         }
         json.dump(content, f)
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
+    re = read_file_load_result(
+        file_report_path=Path(os.path.join(testdata_dir, "results.json"))
+    )
     assert len(re.Tests) == 2
-    assert not re.LoadErrors 
+    assert not re.LoadErrors
+
 
 def test_collect_dir():
     with open(os.path.join(testdata_dir, "test_entry.json"), "w") as f:
@@ -60,15 +60,15 @@ def test_collect_dir():
             "FileReportPath": os.path.join(testdata_dir, "results.json"),
             "Collectors": [],
             "Context": {},
-            "TestSelectors": [
-                "test_demo01"
-            ]
+            "TestSelectors": ["test_demo01"],
         }
         json.dump(content, f)
     collect_testcases_from_args(
         args=["load.py", Path.joinpath(Path(testdata_dir), "test_entry.json")],
         workspace=testdata_dir,
     )
-    re = read_file_load_result(file_report_path=Path(os.path.join(testdata_dir, "results.json")))
+    re = read_file_load_result(
+        file_report_path=Path(os.path.join(testdata_dir, "results.json"))
+    )
     assert len(re.Tests) == 4
     assert len(re.LoadErrors) == 1
