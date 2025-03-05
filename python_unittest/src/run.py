@@ -13,9 +13,7 @@ if parent not in sys.path:
 from testsolar_python_unittest.executor import run_testcases  # type: ignore  # noqa: E402
 
 
-def run_testcases_from_args(
-    args: List[str], workspace: Optional[str] = None
-) -> None:
+def run_testcases_from_args(args: List[str], workspace: Optional[str] = None) -> None:
     if len(args) != 2:
         raise SystemExit("Usage: python run.py <entry_file>")
 

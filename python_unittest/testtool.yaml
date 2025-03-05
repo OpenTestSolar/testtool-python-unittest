@@ -2,7 +2,7 @@ schemaVersion: 1.0
 name: python_unittest
 nameZh: python_unittest测试工具
 description: python_unittest自动化测试工具
-version: 0.2.12
+version: 0.2.13
 lang: python
 defaultBaseImage: mirrors.tencent.com/testsolar-base/python:3.9
 langType: INTERPRETED
@@ -20,6 +20,15 @@ parameterDefs:
         displayName: "否"
         value: 'false'
     inputWidget: choices
+  - name: targetCaseModule
+    value: 用例模块
+    desc: |-
+      用于配置代码仓库下用例所在模块
+      例如代码仓库下若存在 tests 以及 common 两个目录，则当该参数指定为 tests 时
+      同步用例阶段仅会加载 tests 目录下的用例，跳过 common 目录，提高用例加载效率
+      该参数允许指定多个，通过逗号分隔，例如 tests_a,tests_b
+    default: ''
+    inputWidget: text
 entry:
   load: "python3 /testtools/python_unittest/src/load.py $1"
   run: "python3 /testtools/python_unittest/src/run.py $1"
