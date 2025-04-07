@@ -37,7 +37,7 @@ def run_tests(report_file_path: str, test_cases: List[str]) -> None:
         runner.run(suite)
 
 
-def parse_test_report(xml_file: str) -> list[TestResult]:
+def parse_test_report(proj_path: str, xml_file: str) -> list[TestResult]:
     with open(xml_file, "r") as f:
         logger.info(f"xml file:\n{f.read()}")
     tree = ET.parse(xml_file)
@@ -48,7 +48,12 @@ def parse_test_report(xml_file: str) -> list[TestResult]:
         if classname:
             classname = classname.split(".")[-1]
         name = testcase.attrib.get("name") or ""
-        file_name = testcase.attrib.get("file")
+        raw_file_path = testcase.attrib.get("file")
+        file_name = (
+            os.path.relpath(raw_file_path, proj_path)
+            if raw_file_path and os.path.isabs(raw_file_path)
+            else raw_file_path
+        )
         start_time_str = testcase.attrib.get("timestamp")
         start_time = datetime.now()
         if start_time_str:
@@ -181,7 +186,9 @@ def run_testcases(entry: EntryParam) -> None:
         raise Exception(
             f"can't find test report file {report_file_path}, please check if testcases run successfully"
         )
-    test_results = parse_test_report(report_file_path)
+    test_results = parse_test_report(
+        proj_path=entry.ProjectPath, xml_file=report_file_path
+    )
     reporter = FileReporter(report_path=Path(entry.FileReportPath))
     for result in test_results:
         reporter.report_case_result(result)
