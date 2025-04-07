@@ -177,6 +177,10 @@ def run_testcases(entry: EntryParam) -> None:
         )
     else:
         run_tests(report_file_path=report_file_path, test_cases=testcases)
+    if not Path(report_file_path).exists():
+        raise Exception(
+            f"can't find test report file {report_file_path}, please check if testcases run successfully"
+        )
     test_results = parse_test_report(report_file_path)
     reporter = FileReporter(report_path=Path(entry.FileReportPath))
     for result in test_results:
