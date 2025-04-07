@@ -21,10 +21,11 @@ import sys
 from pathlib import Path
 import hashlib
 
+REPORT_FILE_NAME = "test_results.xml"
 
-def run_tests(test_cases: List[str]) -> str:
-    report_file_name = "test_results.xml"
-    with open(report_file_name, "wb") as output:
+
+def run_tests(report_file_path: str, test_cases: List[str]) -> None:
+    with open(report_file_path, "wb") as output:
         suite = unittest.TestSuite()
         for test_case in test_cases:
             try:
@@ -34,7 +35,6 @@ def run_tests(test_cases: List[str]) -> str:
 
         runner = xmlrunner.XMLTestRunner(output=output)
         runner.run(suite)
-        return report_file_name
 
 
 def parse_test_report(xml_file: str) -> list[TestResult]:
@@ -162,10 +162,11 @@ def run_testcases(entry: EntryParam) -> None:
     logger.info(f"format testcases: {testcases}")
     sys.path.insert(0, entry.ProjectPath)
     enable = os.environ.get("TESTSOLAR_TTP_ENABLECOVERAGE", "")
+    report_file_path = os.path.join(entry.ProjectPath, REPORT_FILE_NAME)
     if enable and enable in ["1", "true", "True"]:
         cov = coverage.Coverage(source=[entry.ProjectPath])
         cov.start()
-        report_file_name = run_tests(testcases)
+        run_tests(report_file_path=report_file_path, test_cases=testcases)
         cov.stop()
         cov.save()
         md5_str = calculate_md5_hash(input_string=" ".join(entry.TestSelectors))[:10]
@@ -175,8 +176,8 @@ def run_testcases(entry: EntryParam) -> None:
             )
         )
     else:
-        report_file_name = run_tests(testcases)
-    test_results = parse_test_report(report_file_name)
+        run_tests(report_file_path=report_file_path, test_cases=testcases)
+    test_results = parse_test_report(report_file_path)
     reporter = FileReporter(report_path=Path(entry.FileReportPath))
     for result in test_results:
         reporter.report_case_result(result)
