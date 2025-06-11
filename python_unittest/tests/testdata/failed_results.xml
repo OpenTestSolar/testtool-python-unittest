@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+        <testsuite name="unittest.suite._ErrorHolder-20250611062457" tests="1" file="unittest/suite.py" time="0.000" timestamp="0001-01-01T00:00:00" failures="0" errors="1" skipped="0">
+                <testcase classname="" name="setUpClass (example.order_process.test_ct_cn_order_approval.TestExample)" time="0.000" timestamp="0001-01-01T00:00:00">
+                        <error type="KeyError" message="'bill_no'"><![CDATA[Traceback (most recent call last):
+  File "/data/workspace/example/order_process/test_ct_cn_order_approval.py", line 52, in setUpClass
+    cls.result_list = requirement_undertaking.generate_demand_undertaking(
+  File "/data/workspace/code/requirement_undertaking.py", line 223, in generate_demand_undertaking
+    dun.from_req_to_undert(undertake, amount, executor)
+  File "/data/workspace/example/demand_undertaking_number.py", line 104, in from_req_to_undert
+    redis_access.live(case, key, bill_no=results["bill_no"])
+KeyError: 'bill_no'
+]]></error>
+                </testcase>
+        </testsuite>
+</testsuites>

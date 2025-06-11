@@ -56,7 +56,7 @@ def parse_test_report(proj_path: str, xml_file: str) -> list[TestResult]:
         )
         start_time_str = testcase.attrib.get("timestamp")
         start_time = datetime.now()
-        if start_time_str:
+        if start_time_str and start_time_str != "0001-01-01T00:00:00":
             start_time = datetime.strptime(start_time_str, "%Y-%m-%dT%H:%M:%S")
         run_time = testcase.attrib.get("time")
         elapsed_time = timedelta(0)
@@ -64,7 +64,12 @@ def parse_test_report(proj_path: str, xml_file: str) -> list[TestResult]:
             elapsed_time = timedelta(seconds=float(run_time))
         end_time = start_time + elapsed_time
         case = TestCase(
-            Name=((file_name + "?") if file_name else "") + "/".join([classname, name])
+            Name=((file_name + "?") if file_name else "")
+            + (
+                "/".join([classname, name])
+                if classname and name
+                else (classname or name)
+            )
         )
         tr_result: ResultType = ResultType.SUCCEED
         tr = TestResult(
